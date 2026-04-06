@@ -1,0 +1,23 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+pydantic==2.7.1
+numpy==1.26.4
+opencv-python==4.9.0.80
+
+# Face detection
+mediapipe==0.10.14
+
+# Face recognition (choose one or both)
+insightface==0.7.3           # ArcFace — best quality
+onnx==1.15.0
+onnxruntime==1.18.0          # required by insightface
+# face-recognition==1.3.0      # dlib-based fallback (easier install)
+
+# Anti-spoofing (optional deep model)
+# Clone https://github.com/minivision-ai/Silent-Face-Anti-Spoofing
+# then: pip install -e .
+
+# MTCNN (optional fallback detector)
+mtcnn==0.1.1
+tensorflow==2.16.1           # required by mtcnn

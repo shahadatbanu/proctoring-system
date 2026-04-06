@@ -1,0 +1,152 @@
+/* ── Auth pages (Login / Register) ───────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+  padding: 24px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  text-align: center;
+}
+
+.auth-logo {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.auth-card h1 {
+  font-size: 26px;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+
+.auth-sub {
+  color: #718096;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.auth-error {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  color: #c53030;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.form-group input {
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.form-group input:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49,130,206,.15);
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.auth-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  font-size: 13px;
+  color: #718096;
+}
+
+.auth-footer a {
+  color: #3182ce;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover { text-decoration: underline; }
+
+/* ── Verify screen ─────────────────────────────────────────────────────────── */
+.verify-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fa;
+  padding: 24px;
+}
+
+.verify-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.verify-card h2 {
+  font-size: 22px;
+  color: #1a202c;
+}
+
+.verify-card p {
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #3182ce;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+}
+
+.link-btn:hover { text-decoration: underline; }

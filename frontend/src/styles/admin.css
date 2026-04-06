@@ -1,0 +1,360 @@
+/* ── Admin page layout ───────────────────────────────────────────────────── */
+.admin-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.admin-header h2 { font-size: 24px; }
+
+/* ── Stats grid ───────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.stat-val   { font-size: 32px; font-weight: 700; }
+.stat-label { font-size: 11px; color: #718096; text-transform: uppercase; letter-spacing: .5px; }
+
+/* ── Live alert panel ─────────────────────────────────────────────────────── */
+.live-alert-panel {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.live-alert-panel h3 { font-size: 14px; margin-bottom: 12px; color: #c53030; }
+
+/* ── Exams management ─────────────────────────────────────────────────────── */
+.exams-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.exam-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.exam-card h3 { margin: 0 0 8px 0; }
+.exam-card p  { margin: 4px 0; color: #666; }
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions button:first-child { background: #3182ce; color: white; }
+.actions button:last-child  { background: #e53e3e; color: white; }
+
+/* ── Modal for exam form ──────────────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal form {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal h2 { margin-top: 0; }
+
+.modal input, .modal textarea, .modal select {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.question {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ── Students management ───────────────────────────────────────────────────── */
+.students-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.student-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.student-card h3 { margin: 0 0 8px 0; }
+.student-card p  { margin: 4px 0; color: #666; font-size: 14px; }
+
+.live-alert-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #fed7d7;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.live-alert-row:last-child { border-bottom: none; }
+
+.live-alert-session { color: #718096; font-family: monospace; }
+.live-alert-risk    { font-weight: 700; }
+.live-alert-types   { color: #2d3748; flex: 1; }
+.live-alert-time    { color: #a0aec0; font-size: 11px; }
+
+/* ── Filter tabs ──────────────────────────────────────────────────────────── */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0;
+}
+
+.filter-tab {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  margin-bottom: -1px;
+  transition: all .15s;
+}
+
+.filter-tab:hover { color: #2d3748; }
+.filter-tab.active {
+  color: #3182ce;
+  border-bottom-color: #3182ce;
+  font-weight: 500;
+}
+
+/* ── Sessions table ───────────────────────────────────────────────────────── */
+.table-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.sessions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sessions-table th {
+  background: #f7fafc;
+  padding: 12px 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #718096;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.sessions-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-top: 1px solid #f0f4f8;
+  vertical-align: middle;
+}
+
+.sessions-table tr:hover td { background: rgba(0,0,0,.01); }
+
+.td-name { font-weight: 500; color: #1a202c; }
+.td-sub  { font-size: 11px; color: #a0aec0; margin-top: 2px; }
+
+.td-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.danger-link { color: #e53e3e !important; }
+.danger-link:hover { text-decoration: underline; }
+
+/* ── Pagination ───────────────────────────────────────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #718096;
+}
+
+/* ── Session report page ──────────────────────────────────────────────────── */
+.report-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.report-header h2  { font-size: 20px; margin-bottom: 6px; }
+.report-sub        { font-size: 13px; color: #718096; margin-top: 4px; }
+
+.report-badges { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.score-badge {
+  background: #bee3f8; color: #2c5282;
+  font-size: 12px; font-weight: 700;
+  padding: 4px 10px; border-radius: 12px;
+}
+
+.report-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.report-stat-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.rstat-val   { display: block; font-size: 28px; font-weight: 700; color: #1a202c; }
+.rstat-label { font-size: 11px; color: #718096; text-transform: uppercase; margin-top: 4px; }
+
+.report-section { margin-bottom: 28px; }
+.report-section h3 { font-size: 15px; margin-bottom: 14px; color: #2d3748; }
+
+.alert-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.alert-summary-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.asum-count { display: block; font-size: 24px; font-weight: 700; }
+.asum-label { font-size: 11px; color: #718096; display: block; margin-top: 2px; }
+
+/* ── Alert timeline ───────────────────────────────────────────────────────── */
+.alert-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.timeline-item:last-child { border-bottom: none; }
+
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.timeline-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.timeline-type  { font-weight: 500; }
+.timeline-risk  { color: #718096; }
+.timeline-time  { color: #a0aec0; font-size: 11px; }
+.timeline-frame { color: #a0aec0; font-size: 11px; font-family: monospace; }

@@ -1,0 +1,81 @@
+services:
+
+  # ── MongoDB ──────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: proctor-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: proctoring
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - proctor-net
+
+  # ── Python AI Microservice ────────────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: proctor-ai
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8000
+      RELOAD: "false"
+      LOG_LEVEL: INFO
+      SIMILARITY_THRESHOLD: "0.40"
+    volumes:
+      - ai-data:/app/data     # persist embeddings.json
+    ports:
+      - "8000:8000"
+    networks:
+      - proctor-net
+
+  # ── Node.js Backend ───────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: proctor-backend
+    restart: unless-stopped
+    depends_on:
+      - mongo
+      - ai-service
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      MONGO_URI: mongodb://mongo:27017/proctoring
+      AI_SERVICE_URL: http://ai-service:8000
+      FRONTEND_URL: http://localhost:3000
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+    ports:
+      - "5000:5000"
+    networks:
+      - proctor-net
+
+  # ── React Frontend ────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_BACKEND_URL: http://localhost:5000
+    container_name: proctor-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - proctor-net
+
+volumes:
+  mongo-data:
+  ai-data:
+
+networks:
+  proctor-net:
+    driver: bridge
