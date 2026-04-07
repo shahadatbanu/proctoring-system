@@ -44,6 +44,7 @@ RISK_WEIGHTS = {
     "head_turned_right":float(os.getenv("RISK_HEAD_RIGHT",      "0.15")),
     "head_down":        float(os.getenv("RISK_HEAD_DOWN",       "0.10")),
     "head_tilted":      float(os.getenv("RISK_HEAD_TILTED",     "0.08")),
+    "suspicious_object":float(os.getenv("RISK_SUSPICIOUS_OBJECT","0.25")),
 }
 
 # ── Logging ───────────────────────────────────────────────────────────────────
