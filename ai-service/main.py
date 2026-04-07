@@ -30,22 +30,24 @@ from services.behaviour_analyzer import BehaviourAnalyzer
 from services.anti_spoof        import AntiSpoofChecker
 from services.face_tracker      import FaceTracker
 from services.embedding_store   import embedding_store
+from services.object_detector   import ObjectDetector
 
 logging.basicConfig(level=getattr(logging, LOG_LEVEL, logging.INFO),
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
 logger = logging.getLogger(__name__)
 
-face_detector = face_recognizer = behaviour_analyzer = anti_spoof = face_tracker = None
+face_detector = face_recognizer = behaviour_analyzer = anti_spoof = face_tracker = object_detector = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global face_detector, face_recognizer, behaviour_analyzer, anti_spoof, face_tracker
+    global face_detector, face_recognizer, behaviour_analyzer, anti_spoof, face_tracker, object_detector
     logger.info("Loading AI models...")
     face_detector      = FaceDetector()
     face_recognizer    = FaceRecognizer()
     behaviour_analyzer = BehaviourAnalyzer()
     anti_spoof         = AntiSpoofChecker()
     face_tracker       = FaceTracker()
+    object_detector    = ObjectDetector()
     logger.info(f"Models ready. Stored embeddings: {embedding_store.count()}")
     yield
     logger.info("Shutdown complete")
@@ -81,6 +83,7 @@ class AnalyzeFrameResponse(BaseModel):
     spoof_detected: bool
     risk_score: float
     alerts: list[str]
+    object_detections: list[str]
 
 # ── Utils ─────────────────────────────────────────────────────────────────────
 def decode_image(b64: str) -> np.ndarray:
@@ -93,7 +96,7 @@ def decode_image(b64: str) -> np.ndarray:
     except Exception as e:
         raise HTTPException(400, f"Invalid image: {e}")
 
-def compute_risk(face_count, identity_match, flags, spoof) -> float:
+def compute_risk(face_count, identity_match, flags, spoof, object_detections) -> float:
     w = RISK_WEIGHTS
     s = 0.0
     if face_count == 0:                        s += w["no_face"]
@@ -101,6 +104,7 @@ def compute_risk(face_count, identity_match, flags, spoof) -> float:
     if not identity_match and face_count > 0:  s += w["identity_mismatch"]
     if spoof:                                  s += w["spoof"]
     for f in flags:                            s += w.get(f, 0.05)
+    if object_detections:                      s += w["suspicious_object"] * len(object_detections)
     return min(round(s, 3), 1.0)
 
 def ensure_embedding(user_id: str):
@@ -167,6 +171,7 @@ async def analyze_frame(req: AnalyzeFrameRequest):
 
     identity_match, identity_confidence = False, 0.0
     behaviour_flags, spoof_detected     = [], False
+    object_detections = object_detector.detect(img)
 
     if face_detected:
         emb = face_recognizer.get_embedding(img, faces[0])
@@ -175,20 +180,21 @@ async def analyze_frame(req: AnalyzeFrameRequest):
         behaviour_flags = behaviour_analyzer.analyze(img, faces[0])
         spoof_detected  = anti_spoof.check(img, faces[0], req.session_id)
 
-    risk   = compute_risk(face_count, identity_match, behaviour_flags, spoof_detected)
+    risk   = compute_risk(face_count, identity_match, behaviour_flags, spoof_detected, object_detections)
     alerts = []
     if face_count == 0:                      alerts.append("NO_FACE_DETECTED")
     if face_count > 1:                       alerts.append("MULTIPLE_FACES_DETECTED")
     if not identity_match and face_detected: alerts.append("IDENTITY_MISMATCH")
     if spoof_detected:                       alerts.append("SPOOF_ATTEMPT_DETECTED")
     for f in behaviour_flags:                alerts.append(f.upper())
+    for obj in object_detections:            alerts.append(f"SUSPICIOUS_OBJECT_{obj.upper().replace(' ', '_')}")
 
     return AnalyzeFrameResponse(
         session_id=req.session_id, frame_number=req.frame_number, timestamp=ts,
         face_detected=face_detected, face_count=face_count,
         identity_match=identity_match, identity_confidence=float(identity_confidence),
         behaviour_flags=behaviour_flags, spoof_detected=spoof_detected,
-        risk_score=risk, alerts=alerts,
+        risk_score=risk, alerts=alerts, object_detections=object_detections,
     )
 
 @app.get("/session/{session_id}/status")
